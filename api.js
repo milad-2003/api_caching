@@ -14,7 +14,12 @@ const getWeather = async (city) => {
 
 
 async function printData(city) {
+
+    const t0 = new Date().getTime()
     let weather = await getWeather(city)
+    const t1 = new Date().getTime()
+
+    weather.responseTime = `${t1 - t0}ms`
     console.log(weather)
 }
 
