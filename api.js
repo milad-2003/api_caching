@@ -12,8 +12,24 @@ const cityEndpoint = (city) => `http://api.openweathermap.org/data/2.5/weather?q
 
 
 const getWeather = async (city) => {
-    
+
+    // Check if we have a cached value of the city weather that we want
+    let cacheEntry = await redis.get(`weather:${city}`)
+    // cacheEntry would be a string
+
+    // If we have a cache hit:
+    if (cacheEntry) {
+        // Converting the cacheEntry into json and returning it
+        cacheEntry = JSON.parse(cacheEntry)
+        return {...cacheEntry, 'source': 'cache'}
+    }
+
+    // Here we must have a cache miss
+    // Calling api for response
     let apiResponse = await axios.get(cityEndpoint(city))
+
+    // Storing the response in the cache
+    redis.set(`weather:${city}`, JSON.stringify(apiResponse.data))
 
     return {...apiResponse.data, 'source' : 'API' }
 
