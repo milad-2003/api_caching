@@ -48,7 +48,7 @@ $ node api.js
   weather: [ { id: 800, main: 'Clear', description: 'clear sky', icon: '01n' } ],
   ...
   source: 'API',
-  responseTime: '180ms'
+  responseTime: '580ms'
 }
 ```
 
